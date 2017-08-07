@@ -135,6 +135,8 @@ class StatsEntry(object):
         self.total_content_length = 0
     
     def log(self, response_time, content_length):
+        f = open('response_times.log', 'a')
+        f.write(str(response_time) + '\n')
         self.stats.num_requests += 1
         self.num_requests += 1
 
