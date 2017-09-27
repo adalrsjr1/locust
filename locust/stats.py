@@ -135,9 +135,6 @@ class StatsEntry(object):
         self.total_content_length = 0
     
     def log(self, response_time, content_length):
-        print "Creating logs file"
-        f = open('response.times.log','a')
-        f.write(str(response_time) + '\n')
         self.stats.num_requests += 1
         self.num_requests += 1
 
@@ -316,7 +313,7 @@ class StatsEntry(object):
         except ZeroDivisionError:
             fail_percent = 0
         
-        return (" %-" + str(STATS_NAME_WIDTH) + "s %7d %12s %7d %7d %7d  | %7d %7.2f") % (
+        return (" %-" + str(STATS_NAME_WIDTH) + "s %7d %12s %7d %7d %7d  | %7d %7d %7.2f") % (
             self.method + " " + self.name,
             self.num_requests,
             "%d(%.2f%%)" % (self.num_failures, fail_percent),
@@ -324,6 +321,7 @@ class StatsEntry(object):
             self.min_response_time or 0,
             self.max_response_time,
             self.median_response_time or 0,
+            self.avg_response_time or 0,
             self.current_rps or 0
         )
     
@@ -468,7 +466,7 @@ events.slave_report += on_slave_report
 
 
 def print_stats(stats):
-    console_logger.info((" %-" + str(STATS_NAME_WIDTH) + "s %7s %12s %7s %7s %7s  | %7s %7s") % ('Name', '# reqs', '# fails', 'Avg', 'Min', 'Max', 'Median', 'req/s'))
+    console_logger.info((" %-" + str(STATS_NAME_WIDTH) + "s %7s %12s %7s %7s %7s  | %7s %7s %7s") % ('Name', '# reqs', '# fails', 'Avg', 'Min', 'Max', 'Median', 'Avg', 'req/s'))
     console_logger.info("-" * (80 + STATS_NAME_WIDTH))
     total_rps = 0
     total_reqs = 0
